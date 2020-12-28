@@ -1,13 +1,46 @@
 
+function signUp(){
+    
+    var email=document.getElementById('email').value
+    var password=document.getElementById('password').value
+    
 
-function login(){
-    var username=document.getElementById('userName').value
-    var userPass=document.getElementById('userPass').value
-    if(username=='abc' || userPass=='123'){
-        window.open('./Home.html')
-        
+    
+    var databse=firebase.database().ref('Users')
+    var key=databse.push().key
+    
+    var Users={
+        key:key,
+        email:email,
+        password:password
     }
-    else{
-        window.open('./Error.html')
-    }
+    
+
+    firebase.database().ref('Users/'+key).set(Users)
+
+   
 }
+
+
+function Login(){
+    firebase.database().ref('Users/').on('child_added',function(userdata){
+        console.log(userdata.val().key.email)
+        
+
+    var loginuser=document.getElementById('userName').value
+    var password=document.getElementById('userPass').value
+    console.log(userdata.val().email)
+
+        if(userdata.val().key.email == loginuser && userdata.val().key.password==password)
+            { window.open('./Home.html')}
+        else
+        {   
+           
+            window.open('./Error.html')
+        }
+    })
+   
+}
+
+
+
