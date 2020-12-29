@@ -1,46 +1,56 @@
 
-function signUp(){
+let signUp=()=>{
     
     var email=document.getElementById('email').value
     var password=document.getElementById('password').value
     
 
-    
-    var databse=firebase.database().ref('Users')
-    var key=databse.push().key
-    
-    var Users={
-        key:key,
-        email:email,
-        password:password
-    }
-    
-
-    firebase.database().ref('Users/'+key).set(Users)
-
-   
-}
+    //Firebase signup method 
 
 
-function Login(){
-    firebase.database().ref('Users/').on('child_added',function(userdata){
-        console.log(userdata.val().key.email)
-        
-
-    var loginuser=document.getElementById('userName').value
-    var password=document.getElementById('userPass').value
-    console.log(userdata.val().email)
-
-        if(userdata.val().key.email == loginuser && userdata.val().key.password==password)
-            { window.open('./Home.html')}
-        else
-        {   
-           
-            window.open('./Error.html')
-        }
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then((user) => {
+      console.log(user)
     })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log(errorMessage)
+      // ..
+    });
    
 }
+
+let Login=()=>{
+    let email=document.getElementById('userName').value
+    let password=document.getElementById('userPass').value
+    
+
+    //Firebase Login method
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  .then((user) => {
+    alert("login sucessfully")  
+    window.open('./Home.html')
+    console.log("sucessfully login......")  
+    
+    
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    alert(errorMessage)
+  });
+}
+
+
+// function Login(){
+    
+//     var loginuser=document.getElementById('userName').value
+//     var password=document.getElementById('userPass').value
+    
+   
+// }
 
 
 
